@@ -37,7 +37,7 @@ module.exports.usersController = {
     }
 
     const payload = {
-      password: condidate.password,
+      id: condidate._id,
       login: condidate.login,
     };
     const token = jwt.sign(payload, process.env.SECRET_JWT_KEY, {
