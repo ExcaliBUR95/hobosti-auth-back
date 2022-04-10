@@ -10,28 +10,16 @@ module.exports.commController = {
     }
   },
   addCom: async (req, res) => {
-    const { authorization } = req.headers;
-
-    const [type, token] = authorization.split(" ");
-    if (type !== "Bearer") {
-      return res.status(401).json("неверный тип токена");
-    }
     try {
-      const payload = await jwt.verify(token, process.env.SECRET_JWT_KEY);
       const comm = await Comm.create({
         text: req.body.text,
-        user: payload.id,
+        user: req.user.id,
         news: req.body.news,
       });
-
-      return res.json(comm);
+      return res.json("add comm");
     } catch (e) {
       return res.status(401).json("неверный токен " + e.toString());
     }
-
-    //  catch (e) {
-    //   res.json(e);
-    // }
   },
   patchComm: async (req, res) => {
     await Comm.findByIdAndUpdate(req.params.id, {

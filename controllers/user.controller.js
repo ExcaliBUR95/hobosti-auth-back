@@ -30,11 +30,17 @@ module.exports.usersController = {
     if (!condidate) {
       res.status(401).json("Неверный логин");
     }
-    const valid = bcrypt.compare(password, condidate.password);
+    // const valid = bcrypt.compare(password, condidate.password);
 
-    if (!valid) {
-      return res.status(401).json("Неверный пароль");
+    try {
+      const valid = bcrypt.compare(password, condidate.password);
+    } catch (e) {
+      return res.status(401).json("Неверный пароль" + e.toString());
     }
+
+    // if (!valid) {
+    //   return res.status(401).json("Неверный пароль");
+    // }
 
     const payload = {
       id: condidate._id,
